@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Beyond Journey</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Satisfy&family=Montserrat:wght@400;600&family=Poppins:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
+
+    <style>
+      :root {
+        --orange: #ffa500;
+        --accent-green: #98ff53;
+        --green: #28a745;
+      }
+
+      /* Navbar */
+      .navbar {
+        padding: 0.6rem 0;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1000;
+      }
+      .navbar-brand img {
+        height: 37px;
+      }
+
+      .navbar-nav .nav-link {
+        color: white !important;
+        font-weight: 500;
+        font-size: 0.9rem;
+        font-family: "Poppins", sans-serif;
+        transition: color 0.3s ease;
+      }
+      .navbar-nav .nav-link:hover,
+      .navbar-nav .nav-link:focus {
+        color: var(--orange) !important;
+      }
+
+      /* Dropdown hover effect */
+      .nav-item.dropdown .dropdown-menu {
+        display: block;
+        opacity: 0;
+        transform: translateY(15px);
+        visibility: hidden;
+        transition: all 0.35s ease;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        margin-top: 0;
+      }
+      .nav-item.dropdown:hover > .dropdown-menu {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+      .nav-item.dropdown:first-child:hover > .dropdown-menu {
+        transform: translate(-15px, 0);
+      }
+      .nav-item.dropdown:nth-child(2):hover > .dropdown-menu {
+        transform: translate(15px, 0);
+      }
+
+      .dropdown-item {
+        font-size: 0.9rem;
+        color: #333;
+      }
+      .dropdown-item:hover {
+        background: #f8f9fa;
+        color: var(--orange);
+      }
+
+      /* Sign in button */
+      .btn-login {
+        border: 1px solid white;
+        border-radius: 6px;
+        color: white !important;
+        padding: 4px 14px;
+        font-size: 0.85rem;
+        background: transparent;
+        transition: all 0.3s ease;
+      }
+      .btn-login:hover {
+        background: white;
+        color: #333 !important;
+      }
+
+      /* Menu button */
+      .menu-btn {
+        color: white;
+        border: none;
+        background: transparent;
+        font-size: 1.6rem;
+        margin-left: 10px;
+      }
+
+      /* Hero */
+      .hero-section {
+        position: relative;
+        height: 70vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+      }
+      .hero-section video {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 0;
+      }
+      .hero-overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1;
+      }
+      .hero-text {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        padding: 0 15px;
+        font-family: "Montserrat", sans-serif;
+        margin-left: 9%;
+        margin-bottom: 3%;
+      }
+      .hero-text h2 {
+        font-size: 2.2rem;
+        font-weight: 630;
+        letter-spacing: 1px;
+        margin-bottom: 35px;
+      }
+      .hero-text h2 span {
+        font-family: "Satisfy", cursive;
+        font-weight: 300;
+        color: #ffa500;
+      }
+      .search-box {
+        background: white;
+        border-radius: 50px;
+        padding: 6px 14px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+        max-width: 360px;
+        margin: 20px auto 0;
+        display: flex;
+        align-items: center;
+        border: 2px solid var(--accent-green);
+      }
+      .search-box input {
+        border: none;
+        outline: none;
+        width: 100%;
+        font-size: 0.95rem;
+        padding-left: 10px;
+      }
+      .search-box i {
+        font-size: 1.2rem;
+        color: black;
+      }
+
+      /* Sidebar */
+      #sidebar {
+        position: fixed;
+        top: 0;
+        right: -320px;
+        width: 280px;
+        height: 100%;
+        background: #fff;
+        box-shadow: -4px 0 24px rgba(0, 0, 0, 0.1);
+        border-radius: 16px 0 0 16px;
+        transition: all 0.4s;
+        z-index: 9999;
+        padding: 22px 18px;
+        overflow-y: auto;
+      }
+      #sidebar .close-btn {
+        position: absolute;
+        top: 15px;
+        right: 20px;
+        font-size: 1.8rem;
+        color: #333;
+        cursor: pointer;
+      }
+      #sidebar .sidebar-profile {
+        display: flex;
+        align-items: center;
+        margin-bottom: 18px;
+        gap: 12px;
+      }
+      #sidebar .sidebar-profile img {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        border: 2px solid var(--green);
+        object-fit: cover;
+      }
+      #sidebar ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      #sidebar ul li a {
+        display: flex;
+        align-items: center;
+        padding: 8px 10px;
+        border-radius: 6px;
+        color: #444;
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-weight: 500;
+      }
+      #sidebar ul li a:hover {
+        background: #f6fefb;
+        color: var(--green);
+        font-weight: 600;
+      }
+      #sidebar ul li a i {
+        color: var(--green);
+        margin-right: 8px;
+      }
+
+      /* Mobile Fullscreen Sidebar */
+      @media (max-width: 576px) {
+        #sidebar {
+          width: 100vw;
+          height: 100vh;
+          right: -100vw;
+          border-radius: 0;
+        }
+        .hero-text {
+          max-width: 360px;
+          margin-bottom: 25%;
+        }
+        .hero-section video {
+          height: 75%;
+        }
+        .hero-overlay {
+          height: 75%;
+        }
+        .destination-img {
+          height: 120px;
+          width: 120px;
+        }
+        .navbar-brand img {
+          height: 30px;
+        }
+        .search-box {
+          max-width: 270px;
+        }
+        .search-box input {
+          font-size: 0.8rem;
+        }
+        .destination-img {
+          height: 150px !important;
+          width: 150px !important;
+        }
+      }
+      @media (max-width: 768px) {
+        .hero-text h2 {
+          font-size: 1.3rem;
+        }
+        .btn-login {
+          font-size: 0.8rem;
+          padding: 4px 10px;
+        }
+      }
+
+      /* Swiper Destinations */
+      .destination-overlay {
+        position: absolute;
+        bottom: -27%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+        z-index: 3;
+      }
+      .destination-item {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .destination-img {
+        width: 180px;
+        height: 180px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 11px solid #fff;
+        margin-bottom: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+        transition: transform 0.4s ease, box-shadow 0.4s ease;
+        animation: fadeZoom 0.8s ease forwards;
+      }
+      .destination-img:hover {
+        transform: scale(1.08);
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.6);
+      }
+      @keyframes fadeZoom {
+        from {
+          opacity: 0;
+          transform: scale(0.8);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+      .destination-name {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: rgba(0, 0, 0, 0.7);
+      }
+
+      .navbar-nav .nav-item {
+        margin-left: 1.5rem;
+      }
+      @media (min-width: 769px) {
+        .gap {
+          margin-left: 10px !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+      <div class="container">
+        <a class="navbar-brand" href="#"
+          ><img src="assets/images/logo-ft.png" alt="Beyond Journey Logo"
+        /></a>
+        <div class="collapse navbar-collapse d-none d-lg-flex" id="navbarNav">
+          <ul class="navbar-nav ms-auto align-items-lg-center">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#"
+                >Holiday Tour Packages</a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a class="dropdown-item" href="#">International Tour</a>
+                </li>
+                <li><a class="dropdown-item" href="#">India Tour</a></li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#">Best Visit</a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">By Month</a></li>
+                <li><a class="dropdown-item" href="#">By Season</a></li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Travel Blogs</a>
+            </li>
+          </ul>
+        </div>
+        <div class="ms-auto d-flex align-items-center gap">
+          <a class="btn btn-login me-2" href="#">Sign In</a>
+          <button class="menu-btn" id="menuBtn">
+            <i class="bi bi-list"></i>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <div id="sidebar">
+      <span class="close-btn">&times;</span>
+      <div class="sidebar-profile">
+        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User" />
+        <div class="profile-info" style="font-weight: 600">Hello Ashish</div>
+      </div>
+      <ul class="d-lg-none">
+        <li>
+          <a data-bs-toggle="collapse" href="#holidayMenu" role="button"
+            ><i class="bi bi-suitcase"></i> Holiday Tour Packages</a
+          >
+          <ul class="collapse ps-4" id="holidayMenu">
+            <li><a href="#">International Tour</a></li>
+            <li><a href="#">India Tour</a></li>
+          </ul>
+        </li>
+        <li>
+          <a data-bs-toggle="collapse" href="#bestvisitMenu" role="button"
+            ><i class="bi bi-map"></i> Best Visit</a
+          >
+          <ul class="collapse ps-4" id="bestvisitMenu">
+            <li><a href="#">By Month</a></li>
+            <li><a href="#">By Season</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="#"><i class="bi bi-journal-text"></i> Travel Blogs</a>
+        </li>
+      </ul>
+      <ul>
+        <li>
+          <a href="#"><i class="bi bi-geo-alt"></i> Random Tour Package</a>
+        </li>
+        <li>
+          <a href="#"><i class="bi bi-compass"></i> Adventure Trip</a>
+        </li>
+        <li>
+          <a href="#"><i class="bi bi-calendar-week"></i> Weekend Getaway</a>
+        </li>
+        <li>
+          <a href="#"><i class="bi bi-lightbulb"></i> Travel Tips</a>
+        </li>
+        <li>
+          <a href="#"><i class="bi bi-envelope"></i> Contact Us</a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Hero -->
+    <section class="hero-section">
+      <video autoplay muted loop playsinline>
+        <source src="assets/video/group departure.mp4" type="video/mp4" />
+      </video>
+      <div class="hero-overlay"></div>
+      <div class="hero-text container">
+        <h2>Har Safar <span>Ek Nayi</span> Kahani</h2>
+        <div class="search-box">
+          <i class="bi bi-search"></i>
+          <input type="text" placeholder="Search countries, cities" />
+        </div>
+      </div>
+
+      <!-- Destination Overlay -->
+      <div class="destination-overlay">
+        <div class="swiper mySwiper"><div class="swiper-wrapper"></div></div>
+      </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+      const menuBtn = document.getElementById("menuBtn");
+      const sidebar = document.getElementById("sidebar");
+      const closeBtn = document.querySelector(".close-btn");
+      menuBtn.addEventListener("click", () => {
+        sidebar.style.right = "0";
+      });
+      closeBtn.addEventListener("click", () => {
+        sidebar.style.right = window.innerWidth <= 576 ? "-100vw" : "-320px";
+      });
+      document.addEventListener("click", (event) => {
+        if (
+          !sidebar.contains(event.target) &&
+          !menuBtn.contains(event.target)
+        ) {
+          sidebar.style.right = window.innerWidth <= 576 ? "-100vw" : "-320px";
+        }
+      });
+
+      // Typewriter effect
+      const searchInput = document.querySelector(".search-box input");
+      const text = "Where do you want to Holiday?";
+      let i = 0;
+      function typeWriter() {
+        if (i < text.length) {
+          searchInput.placeholder = text.substring(0, i + 1);
+          i++;
+        } else {
+          i = 0;
+        }
+        setTimeout(typeWriter, 200);
+      }
+      typeWriter();
+
+      // Inject destinations
+      const destinationsData = [
+        { name: "Sri Lanka", img: "assets/images/Inter-national-trip/1.jpg" },
+        { name: "Europe", img: "assets/images/Inter-national-trip/2.jpg" },
+        { name: "Dubai", img: "assets/images/Inter-national-trip/3.jpg" },
+        { name: "Mauritius", img: "assets/images/Inter-national-trip/4.jpg" },
+        { name: "Singapore", img: "assets/images/Inter-national-trip/5.jpg" },
+        { name: "North Goa", img: "assets/images/Inter-national-trip/6.jpg" },
+        { name: "Vietnam", img: "assets/images/Inter-national-trip/7.jpg" },
+        { name: "Maldives", img: "assets/images/Inter-national-trip/8.jpg" },
+        { name: "Malaysia", img: "assets/images/Inter-national-trip/9.jpg" },
+      ];
+      const wrapper = document.querySelector(".swiper-wrapper");
+      destinationsData.forEach((dest) => {
+        const slide = document.createElement("div");
+        slide.classList.add("swiper-slide");
+        slide.innerHTML = `
+    <div class="destination-item">
+      <img src="${dest.img}" alt="${dest.name}" class="destination-img">
+      <span class="destination-name">${dest.name}</span>
+    </div>`;
+        wrapper.appendChild(slide);
+      });
+
+      // Swiper init
+      new Swiper(".mySwiper", {
+        slidesPerView: 4,
+        spaceBetween: 10,
+        loop: true,
+        autoplay: { delay: 2000, disableOnInteraction: false },
+        breakpoints: {
+          320: { slidesPerView: 2, spaceBetween: 10 },
+          768: { slidesPerView: 3, spaceBetween: 15 },
+          1024: { slidesPerView: 5, spaceBetween: 18 },
+        },
+      });
+    </script>
+  </body>
+</html>
